@@ -42,19 +42,6 @@ for index, row in df_home.iterrows():
                 if col not in ["Date", "Team", "HomeTeam", "AwayTeam"]:   
                     res.at[index, f"{team}_" + col + "_mean"] = df[col].mean()
                     res.at[index, f"{team}_" + col + "_mean_5"] = last_5_games[col].mean()
-                    # tmp = df[col]
-                    # sum = 0
-                    # for i in tmp:
-                    #     sum += float(i)
-                    # mean = round(sum/len(tmp), 3)
-                    # res.at[index, f"{team}_" + col + "_mean"] = mean
-
-                    # tmp = last_5_games[col]
-                    # sum = 0
-                    # for i in tmp:
-                    #     sum += float(i)
-                    # mean = round(sum/len(tmp), 3)
-                    # res.at[index, f"{team}_" + col + "_mean_5"] = mean
 
 res.dropna(inplace=True)
 res.to_csv("../data/dataset_1.csv", index=False)      

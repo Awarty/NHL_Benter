@@ -23,7 +23,7 @@ def eval_bets(df):
             date = (row["Date"] + datetime.timedelta(1)).strftime("%Y-%m-%d")
             tmp = df_bets[(df_bets["Date"]==date) & (df_bets["HomeTeam"]==row["HomeTeam"]) & (df_bets["AwayTeam"]==row["AwayTeam"])]
 
-        else:
+        if not tmp.empty:
             df.at[index, "HomeOdds"] = tmp["OddsHome"].values[0]
             df.at[index, "DrawOdds"] = tmp["OddsDraw"].values[0]
             df.at[index, "AwayOdds"] = tmp["OddsAway"].values[0]
@@ -47,6 +47,8 @@ def eval_bets(df):
                 df.at[index, "Bet"] = "NO BET"
                 df.at[index, "BetSize"] = 0
                 df.at[index, "BetWon"] = 0
+        
+
     return df
 
 def eval_model(df, CV):
@@ -54,7 +56,7 @@ def eval_model(df, CV):
     for i in range(CV):
         df_res = pd.DataFrame()
         y = df[["home_target", "away_target"]]
-        X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.3)
+        X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.3, random_state=123)
 
         y_home_train = y_train["home_target"]
         y_away_train = y_train["away_target"]

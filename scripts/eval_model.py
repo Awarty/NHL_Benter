@@ -56,7 +56,7 @@ def eval_model(df, CV):
     for i in range(CV):
         df_res = pd.DataFrame()
         y = df[["home_target", "away_target"]]
-        X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.3, random_state=123)
+        X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.3)#, random_state=123)
 
         y_home_train = y_train["home_target"]
         y_away_train = y_train["away_target"]
@@ -78,10 +78,10 @@ def eval_model(df, CV):
         es = EarlyStopping(monitor="loss", patience=3, verbose=0)
         home_model = create_network(X_train.shape[1])
         away_model = create_network(X_train.shape[1])
-        home_model.fit(X_train, y_home_train, batch_size=16, callbacks=[es], epochs=500, verbose=0)
-        df_res["home_pred"] = home_model.predict(X_test)
-        away_model.fit(X_train, y_away_train, batch_size=16, callbacks=[es], epochs=500, verbose=0)
-        df_res["away_pred"] = away_model.predict(X_test)
+        #home_model.fit(X_train, y_home_train, batch_size=16, callbacks=[es], epochs=500, verbose=0)
+        df_res["home_pred"] = y_home_test#home_model.predict(X_test)
+        #away_model.fit(X_train, y_away_train, batch_size=16, callbacks=[es], epochs=500, verbose=0)
+        df_res["away_pred"] = y_away_test#away_model.predict(X_test)
 
         for index, row in df_res.iterrows():
             prob = prob_outcome(row["home_pred"], row["away_pred"])
